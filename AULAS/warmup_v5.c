@@ -28,7 +28,7 @@ int main(){
   // Check if the file exist
   file = fopen("Warmup.in", "r");
   if (file == NULL) {
-    return 0;
+    return 1;
   }
 
   char String[MAX_SIZE];
@@ -69,4 +69,5 @@ int main(){
 
     printf("%s\n", NewString); // ANSWER
   }
+  return 0;
 }
