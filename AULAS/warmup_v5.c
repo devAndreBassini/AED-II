@@ -2,6 +2,8 @@
 #include <string.h>
 
 #define MAX_SIZE 300
+#define FILE_NAME "Warmup.in"
+
 FILE *file;
 
 // Function responsible to right shift the String
@@ -21,12 +23,9 @@ int ErrosCounter(char *String){
   return erros;
 }
 
-// char String[MAX_SIZE] = "This_is_a_[Beiju]_text"; 
-// char String[MAX_SIZE] = "[[]][]Happy_Birthday_Tsinghua_University";
-
 int main(){
   // Check if the file exist
-  file = fopen("Warmup.in", "r");
+  file = fopen(FILE_NAME, "r");
   if (file == NULL) {
     return 1;
   }
@@ -67,7 +66,7 @@ int main(){
     // Set the last character to '\0' to prevent memory excess
     NewString[NewStringSize] = '\0';
 
-    printf("%s\n", NewString); // ANSWER
+    printf("%s", NewString); // ANSWER
   }
   return 0;
 }
