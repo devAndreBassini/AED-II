@@ -30,7 +30,6 @@
 *.exe
 *.out
 *.app
-*.in
 
 # Java ignore
 # Compiled class file
