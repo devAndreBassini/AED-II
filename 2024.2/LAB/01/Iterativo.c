@@ -24,5 +24,3 @@ int main(){
 
     return 0;
 }
-
-// rm minhaSaida && gcc Iterativo.c -o minhaSaida && ./minhaSaida

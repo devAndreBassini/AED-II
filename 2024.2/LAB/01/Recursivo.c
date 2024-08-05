@@ -30,5 +30,3 @@ int main() {
 
     return 0;
 }
-
-// gcc Recursivo.c -o minhaSaida && ./minhaSaida

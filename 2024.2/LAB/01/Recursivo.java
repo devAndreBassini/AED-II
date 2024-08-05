@@ -26,5 +26,3 @@ public class Recursivo {
         return count + countUpperCase(text, index - 1);
     }
 }
-
-// javac Recursivo.java && java Recursivo < 1_pub.in > minhaSaida.out && diff 1_pub.out minhaSaida.out

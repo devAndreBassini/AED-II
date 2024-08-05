@@ -23,5 +23,3 @@ public class Iterativo {
         myObj.close();
     }
 }
-
-// javac Iterativo.java && java Iterativo < 1_pub.in > minhaSaida.out && diff 1_pub.out minhaSaida.out
