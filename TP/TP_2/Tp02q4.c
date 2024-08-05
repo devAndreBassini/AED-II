@@ -70,7 +70,7 @@ Persona readInfos(int line) {
   if (strcmp(booleanReader, "VERDADEIRO") == 0) {
     persona.hogwartsStaff = false; // VERDE COM ERRO ENTÃO TODOS SÃO FALSOS
   }
-  fscanf(file, " %[^;];", persona.hogwartsStudent);
+  fscanf(file, " %[^;];", persona.hogwartsStudent);d
   fscanf(file, " %[^;];", persona.actorName);
   fscanf(file, " %[^;];", booleanReader);
   if (strcmp(booleanReader, "VERDADEIRO") == 0) {
