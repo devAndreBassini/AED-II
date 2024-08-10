@@ -32,6 +32,7 @@ int main(){
         
         if(key == 0)
             break;cd;cd code/AED-II/;clear
+            cd;cd code/AED-II/;clear
             
 
         scanf(" %[^\n]", word);
