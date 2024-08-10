@@ -4,21 +4,21 @@ public class Palindromo {
     public static void main(String[] args) {
         Scanner myObj = new Scanner(System.in);
 
-        String word = myObj.nextLine();
-        while (word != "FIM") {
-            word = word.toLowerCase();
+        do {
+            String word = myObj.nextLine().toLowerCase();
+
+            if (word == "FIM")
+                break;
 
             StringBuilder sb = new StringBuilder(word);
             String reversedString = sb.reverse().toString();
 
-            if (word.equals(reversedString)) {
+            if (word.equals(reversedString))
                 System.out.println("SIM");
-            } else {
+            else
                 System.out.println("NAO");
-            }
 
-            word = myObj.nextLine();
-        }
+        } while (myObj.hasNextLine());
         myObj.close();
     }
 }

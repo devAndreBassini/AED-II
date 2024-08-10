@@ -4,45 +4,29 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *ToUpper(char *str, int size) {
-    for (int i = 0; i < size; i++) {
-        str[i] = toupper(str[i]);
+bool ehPalindromo(char *str) {
+    int size = strlen(str) - 2;
+
+    for (int i = 0; i <= size; i++) {
+        if (tolower(str[i]) != tolower(str[size - i]))
+            return false;
     }
-    return str;
+    return true;
 }
 
-bool ehPalindromo(char *str, int size) {
-    bool condition = false;
-
-    strcpy(str, ToUpper(str, size));
-    for (int i = 0; i < size; i++) {
-        if (str[i] == str[size - i - 1])
-            condition = true;
-        else
-            condition = false;
-    }
-    return condition;
-}
-
-int main() {
-    char endKey[80] = "FIM";
+int main() { 
     char str[80];
-    int size = strlen(str);
 
-    do {
-        scanf(" %[^\n]", str);
-        int size = strlen(str);
+    while(true){
+        fgets(str, sizeof(str), stdin);
 
-        ToUpper(str, size);
-        if (strcmp(str, endKey) == 0) {
+        if (strcmp(str, "FIM") == 0)
             return 0;
-        }
 
-        if (ehPalindromo(str, size))
+        if (ehPalindromo(str))
             printf("SIM\n");
         else
             printf("NAO\n");
-
-    } while (strcmp(str, endKey) != 0);
+    }
     return 0;
 }
