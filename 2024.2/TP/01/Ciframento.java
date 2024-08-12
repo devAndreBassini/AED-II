@@ -1,12 +1,13 @@
 import java.util.Scanner;
 
 public class Ciframento {
-    public static void main(String[] args) {
-        Scanner myObj = new Scanner(System.in);
+    private static final int key = 3;
 
-        int key = 3;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         while (true) {
-            String word = myObj.nextLine();
+            String word = scanner.nextLine();
 
             if (word.equals("FIM"))
                 break;
@@ -14,15 +15,12 @@ public class Ciframento {
             StringBuilder encryptedWord = new StringBuilder();
 
             for (int i = 0; i < word.length(); i++) {
-                char aux = word.charAt(i);
-                if (Character.isLetter(aux))
-                    aux += key;
-
-                encryptedWord.append(aux);
+                encryptedWord.append((char) (word.charAt(i) + key));
             }
 
             System.out.println(encryptedWord);
         }
-        myObj.close();
+
+        scanner.close();
     }
 }
