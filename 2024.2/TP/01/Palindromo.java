@@ -5,7 +5,7 @@ public class Palindromo {
         Scanner myObj = new Scanner(System.in);
 
         do {
-            String word = myObj.nextLine().toLowerCase();
+            String word = myObj.nextLine();
 
             if (word == "FIM")
                 break;
