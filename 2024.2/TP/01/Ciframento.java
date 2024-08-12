@@ -3,23 +3,26 @@ import java.util.Scanner;
 public class Ciframento {
     public static void main(String[] args) {
         Scanner myObj = new Scanner(System.in);
-        
+
         int key = 3;
-        int aux;
+        while (true) {
+            String word = myObj.nextLine();
 
-        do{
-            String word = "";
-            
-            String entrada = myObj.nextLine();
-            char[] entArray = entrada.toCharArray();
+            if (word.equals("FIM"))
+                break;
 
-            for(int i = 0; i < entrada.length(); i++){
-                aux = (int)(entArray[i]) + key;
-                word += (char)aux;
+            StringBuilder encryptedWord = new StringBuilder();
+
+            for (int i = 0; i < word.length(); i++) {
+                char aux = word.charAt(i);
+                if (Character.isLetter(aux))
+                    aux += key;
+
+                encryptedWord.append(aux);
             }
-        
-            System.out.println(word);
-        } while(myObj.hasNextLine());
+
+            System.out.println(encryptedWord);
+        }
         myObj.close();
     }
 }
