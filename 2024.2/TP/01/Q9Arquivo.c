@@ -17,9 +17,8 @@ void setValues(int n){
     int x;
     openFile("a");
     for(int i = 0; i < n; i++){
-        fprintf(file, "%i\n", i);
-        // scanf("%i", &x);
-        // fprintf(file, "%i;", x);
+        scanf("%i", &x);
+        fprintf(file, "%i;", x);
     }
     fclose(file);
 }

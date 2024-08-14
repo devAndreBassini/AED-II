@@ -1,3 +1,9 @@
 {
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "C": "C:\\VsCode\\compiladores\\bin",
+        "Py": "C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "Jaava": "C:\\Program Files\\Java\\jdk-17\\bin",
+        "string.h": "c"
+    }
 }

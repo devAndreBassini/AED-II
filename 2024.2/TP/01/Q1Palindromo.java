@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Palindromo {
+public class Q1Palindromo {
     public static void main(String[] args) {
         Scanner myObj = new Scanner(System.in);
 

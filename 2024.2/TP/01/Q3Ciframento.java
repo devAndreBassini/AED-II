@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Ciframento {
+public class Q3Ciframento {
     private static final int key = 3;
 
     public static void main(String[] args) {
