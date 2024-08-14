@@ -8,5 +8,6 @@ public class Q5AlgebraBoleana {
             if(myObj.hasNextLine() == false)
                 break;
         }
+        myObj.close();
     }
 }
