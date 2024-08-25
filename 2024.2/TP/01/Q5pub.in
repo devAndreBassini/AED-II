@@ -1,0 +1,5 @@
+2 1 1 and(not(A) , not(B))
+2 1 1 not(and(A , B))
+3 1 1 1 and(or(A , B) , not(and(B , C)))
+3 0 0 0 and(A , or(B , C))
+0
