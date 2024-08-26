@@ -1,20 +1,23 @@
 public class Q3Ciframento {
-    private static final int key = 3;
-
     public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
 
+        int key = 3;
         while (true) {
+            sb.setLength(0);
             String word = MyIO.readLine();
-            System.out.println(">" + word);
             if (word.equals("FIM"))
                 break;
 
-            String encryptedWord = "";
+            char[] vet = new char[word.length()];
 
             for (int i = 0; i < word.length(); i++) {
-                System.out.println(encryptedWord + "<");
-                encryptedWord = encryptedWord + (char)((int)word.charAt(i) + key);
+                vet[i] = word.toCharArray()[i];
+                vet[i] += (char) key;
+                sb.append(vet[i]);
             }
+
+            String encryptedWord = sb.toString();
 
             System.out.println(encryptedWord);
         }
