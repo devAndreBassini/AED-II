@@ -5,13 +5,15 @@ public class Q1 {
         Scanner scan = new Scanner(System.in);
 
         int contL = 0, contR = 0, total = 0;
-        String line;
+        String line = "C";
 
-        while(true){
-            line = scan.nextLine();           
-            if (line == "FIM" || !(scan.hasNextLine()))
-                break;
+        while(scan.hasNextLine()){
+            line = scan.nextLine(); 
 
+            if (line.equals("FIM")) {
+                break; 
+            }
+            
             for (int i = 0; i < line.length(); i++) {
                 if (line.toCharArray()[i] == '(')
                     contL++;
@@ -31,12 +33,9 @@ public class Q1 {
             else
                 System.out.println("incorreto");
 
-            if(scan.hasNextLine()){
-                line = scan.nextLine();
-                contL = 0;
-                contR = 0;
-                total = 0;
-            }
+            contL = 0;
+            contR = 0;
+            total = 0;
         }
         scan.close();
     }

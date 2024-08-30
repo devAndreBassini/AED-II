@@ -1,50 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-FILE *file;
-char FILE_NAME[80] = "arquivo.txt";
+#define NOME_ARQUIVO "numeros.txt"
 
-void openFile(const char *type){
-    file = fopen(FILE_NAME, type);
-}
-
-void resetFile(){
-    openFile("w");
-    fclose(file);
-}
-
-void setValues(int n){
-    int x;
-    openFile("a");
-    for(int i = 0; i < n; i++){
-        scanf("%i", &x);
-        fprintf(file, "%i;", x);
-    }
-    fclose(file);
-}
-
-void getValues(int n){
-    int x[n];
-    openFile("r");
-
-    for(int i = n-1; i >= 0; i--){
-        fscanf(file, "%i", &x[i]);
-    }
-    fclose(file);
-    
-    for(int i = 0; i < n; i++){
-        printf("%i\n", x[i]);
-    }
-}
-
-int main(){
+int main() {
+    FILE *arquivo;
     int n;
-
-    scanf("%i", &n);
     
-    resetFile();
-    setValues(n);
-    getValues(n);
+    scanf("%d", &n);
 
+    arquivo = fopen(NOME_ARQUIVO, "wb");
+    if (arquivo == NULL) {
+        perror("Erro ao abrir o arquivo");
+        return 1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        double numero;
+        scanf("%lf", &numero);
+        fwrite(&numero, sizeof(double), 1, arquivo);
+    }
+
+    fclose(arquivo);
+
+    arquivo = fopen(NOME_ARQUIVO, "rb");
+    if (arquivo == NULL) {
+        perror("Erro ao abrir o arquivo");
+        return 1;
+    }
+
+    fseek(arquivo, 0, SEEK_END);
+    long posicaoAtual = ftell(arquivo);
+
+    for (int i = n - 1; i >= 0; i--) {
+        posicaoAtual -= sizeof(double);
+        fseek(arquivo, posicaoAtual, SEEK_SET);
+        double numero;
+        fread(&numero, sizeof(double), 1, arquivo);
+
+        char buffer[64];
+        sprintf(buffer, "%.10f", numero);
+
+        char *ptr = buffer;
+        while (*ptr) ptr++;
+        while (*(ptr - 1) == '0') ptr--;
+        if (*(ptr - 1) == '.') ptr--;
+        *ptr = '\0';
+
+        printf("%s\n", buffer);
+    }
+
+    fclose(arquivo);
     return 0;
 }

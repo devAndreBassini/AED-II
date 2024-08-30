@@ -1,25 +1,26 @@
-public class Q3Ciframento {
-    public static void main(String[] args) {
-        StringBuilder sb = new StringBuilder();
+import java.util.Scanner;
 
-        int key = 3;
+public class Q3Ciframento {
+    private static final int key = 3;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         while (true) {
-            sb.setLength(0);
-            String word = MyIO.readLine();
+            String word = scanner.nextLine();
+
             if (word.equals("FIM"))
                 break;
 
-            char[] vet = new char[word.length()];
+            StringBuilder encryptedWord = new StringBuilder();
 
             for (int i = 0; i < word.length(); i++) {
-                vet[i] = word.toCharArray()[i];
-                vet[i] += (char) key;
-                sb.append(vet[i]);
+                encryptedWord.append((char) (word.charAt(i) + key));
             }
-
-            String encryptedWord = sb.toString();
 
             System.out.println(encryptedWord);
         }
+
+        scanner.close();
     }
 }
