@@ -1,112 +1,233 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.io.*;
+import java.net.*;
 
 public class Q7LeituraHTML {
+    static final char[] especial = { 225, 233, 237, 243,
+            250, 224, 232, 236, 242, 249, 227, 245, 226,
+            234, 238, 244, 251 };
 
-    public static void main(String[] args) throws IOException {
-        Scanner scan = new Scanner(System.in);
+    static int[] vogais;
 
-        String[] vowels = {"a", "e", "i", "o", "u", "á", "é", "í", "ó", "ú", "à", "è", "ì", "ò", "ù", "ã", "õ", "â", "ê", "î", "ô", "û"};
-        Map<String, Integer> counts = new HashMap<>();
-        for (String vowel : vowels) {
-            counts.put(vowel, 0);
+    public static void main(String[] args) {
+        MyIO.setCharset("UTF-8");
+        String nome = "";
+        String endereco = "";
+        String html = "";
+        int consoantes = 0, br = 0, table = 0;
+
+        do {
+            nome = MyIO.readLine();
+            if (!isFim(nome)) {
+                endereco = MyIO.readLine();
+                html = getHtml(endereco);
+
+                countVogais(html);
+                consoantes = countConsoantes(html);
+                br = countBr(html);
+                table = countTable(html);
+
+                vogais[0] -= table;
+                vogais[1] -= table;
+                consoantes -= (2 * br + 3 * table);
+
+                printVariaveis();
+                System.out.printf("consoante(%s) ",
+                        consoantes);
+                System.out.printf("<br>(%s) ", br);
+                System.out.printf("<table>(%s) ", table);
+                System.out.printf("%s\n", nome);
+            }
+        } while (!isFim(nome));
+
+    }
+
+    public static boolean isFim(String s) {
+        boolean result = false;
+        if (s.length() == 3 && s.charAt(0) == 'F'
+                && s.charAt(1) == 'I'
+                && s.charAt(2) == 'M') {
+            result = true;
         }
-        counts.put("consoante", 0);
-        counts.put("<br>", 0);
-        counts.put("<table>", 0);
+        return (result);
+    }
 
-        String pageName;
-        while (!(pageName = MyIO.readLine()).equals("FIM")) {
-            String urlAddress = MyIO.readLine();
-            URL url = new URL(urlAddress);
-            URLConnection con = url.openConnection();
-            InputStream is = con.getInputStream();
-
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                StringBuilder contentBuilder = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    contentBuilder.append(line).append("\n");
-                }
-                
-                String content = contentBuilder.toString();
-                String text = decodeHtmlEntities(content);
-
-                for (String vowel : vowels) {
-                    int index = 0;
-                    while ((index = text.indexOf(vowel, index)) != -1) {
-                        counts.put(vowel, counts.get(vowel) + 1);
-                        index += vowel.length();
+    public static void countVogais(String html) {
+        vogais = new int[23];
+        for (int x = 0; x < html.length(); x = x + 1) {
+            char c = html.charAt(x);
+            if (c == 'a')
+                vogais[0]++;
+            else if (c == 'e')
+                vogais[1]++;
+            else if (c == 'i')
+                vogais[2]++;
+            else if (c == 'o')
+                vogais[3]++;
+            else if (c == 'u')
+                vogais[4]++;
+            else if (isEspecial(c)) {
+                for (int y = 0; y < especial.length; y = y
+                        + 1) {
+                    if (c == especial[y]) {
+                        vogais[y + 5]++;
+                        break;
                     }
                 }
-                for (char c : text.toCharArray()) {
-                    if (Character.isLetter(c)) {
-                        String charStr = String.valueOf(c);
-                        if (!counts.containsKey(charStr)) {
-                            counts.put("consoante", counts.get("consoante") + 1);
-                        }
-                    }
+            }
+        }
+    }
+
+    public static boolean isEspecial(char c) {
+        for (int x = 0; x < especial.length; x = x + 1) {
+            if (c == especial[x]) {
+                return (true);
+            }
+        }
+        return (false);
+    }
+
+    public static int countConsoantes(String html) {
+        int result = 0;
+        String consoantes = "bcdfghjklmnpqrstvwxyz";
+        for (int x = 0; x < consoantes.length(); x = x
+                + 1) {
+            char consoantechar = consoantes.charAt(x);
+            for (int y = 0; y < html.length(); y = y + 1) {
+                char htmlchar = html.charAt(y);
+                if (htmlchar == consoantechar) {
+                    result++;
                 }
-                counts.put("<br>", countOccurrences(content, "<br>"));
-                counts.put("<table>", countOccurrences(content, "<table>"));
             }
-            System.out.println(formatOutput(counts) + " " + pageName);
-            for (String vowel : vowels) {
-                counts.put(vowel, 0);
+        }
+        return (result);
+    }
+
+    public static int countBr(String html) {
+        int result = 0;
+        for (int x = 0; x < html.length() - 4; x = x + 1) {
+            if (isEquals(subString(html, x, x + 4),
+                    "<br>")) {
+                result++;
             }
-            counts.put("consoante", 0);
-            counts.put("<br>", 0);
-            counts.put("<table>", 0);
         }
-        scan.close();
+        return (result);
     }
 
-    private static int countOccurrences(String content, String pattern) {
-        int count = 0;
-        int index = 0;
-        while ((index = content.indexOf(pattern, index)) != -1) {
-            count++;
-            index += pattern.length();
+    public static int countTable(String html) {
+        int result = 0;
+        for (int x = 0; x < html.length() - 7; x = x + 1) {
+            if (isEquals(subString(html, x, x + 7),
+                    "<table>")) {
+                result++;
+            }
         }
-        return count;
+        return (result);
     }
 
-    private static String decodeHtmlEntities(String input) {
-        return input.replace("&aacute;", "á")
-                    .replace("&eacute;", "é")
-                    .replace("&iacute;", "í")
-                    .replace("&oacute;", "ó")
-                    .replace("&uacute;", "ú")
-                    .replace("&agrave;", "à")
-                    .replace("&egrave;", "è")
-                    .replace("&igrave;", "ì")
-                    .replace("&ograve;", "ò")
-                    .replace("&ugrave;", "ù")
-                    .replace("&atilde;", "ã")
-                    .replace("&otilde;", "õ")
-                    .replace("&acirc;", "â")
-                    .replace("&ecirc;", "ê")
-                    .replace("&icirc;", "î")
-                    .replace("&ocirc;", "ô")
-                    .replace("&ucirc;", "û");
+    public static void printVariaveis() {
+        System.out.printf("a(%s) ", vogais[0]);
+        System.out.printf("e(%s) ", vogais[1]);
+        System.out.printf("i(%s) ", vogais[2]);
+        System.out.printf("o(%s) ", vogais[3]);
+        System.out.printf("u(%s) ", vogais[4]);
+        System.out.printf("%c(%s) ", especial[0],
+                vogais[5]);
+        System.out.printf("%c(%s) ", especial[1],
+                vogais[6]);
+        System.out.printf("%c(%s) ", especial[2],
+                vogais[7]);
+        System.out.printf("%c(%s) ", especial[3],
+                vogais[8]);
+        System.out.printf("%c(%s) ", especial[4],
+                vogais[9]);
+        System.out.printf("%c(%s) ", especial[5],
+                vogais[10]);
+        System.out.printf("%c(%s) ", especial[6],
+                vogais[11]);
+        System.out.printf("%c(%s) ", especial[7],
+                vogais[12]);
+        System.out.printf("%c(%s) ", especial[8],
+                vogais[13]);
+        System.out.printf("%c(%s) ", especial[9],
+                vogais[14]);
+        System.out.printf("%c(%s) ", especial[10],
+                vogais[15]);
+        System.out.printf("%c(%s) ", especial[11],
+                vogais[16]);
+        System.out.printf("%c(%s) ", especial[12],
+                vogais[17]);
+        System.out.printf("%c(%s) ", especial[13],
+                vogais[18]);
+        System.out.printf("%c(%s) ", especial[14],
+                vogais[19]);
+        System.out.printf("%c(%s) ", especial[15],
+                vogais[20]);
+        System.out.printf("%c(%s) ", especial[16],
+                vogais[21]);
     }
 
-    private static String formatOutput(Map<String, Integer> counts) {
-        return String.format(
-            "a(%d) e(%d) i(%d) o(%d) u(%d) á(%d) é(%d) í(%d) ó(%d) ú(%d) à(%d) è(%d) ì(%d) ò(%d) ù(%d) ã(%d) õ(%d) â(%d) ê(%d) î(%d) ô(%d) û(%d) consoante(%d) <br>(%d) <table>(%d)",
-            counts.get("a"), counts.get("e"), counts.get("i"), counts.get("o"), counts.get("u"),
-            counts.get("á"), counts.get("é"), counts.get("í"), counts.get("ó"), counts.get("ú"),
-            counts.get("à"), counts.get("è"), counts.get("ì"), counts.get("ò"), counts.get("ù"),
-            counts.get("ã"), counts.get("õ"), counts.get("â"), counts.get("ê"), counts.get("î"),
-            counts.get("ô"), counts.get("û"), counts.get("consoante"), counts.get("<br>"), counts.get("<table>")
-        );
+    public static String subString(String s, int start,
+            int end) {
+        String result = "";
+        for (int x = start; x < end; x = x + 1) {
+            char c = s.charAt(x);
+            result = result + c;
+        }
+        return (result);
+    }
+
+    public static int indexOf(char find, String s) {
+        int index = -1;
+        for (int x = 0; x < s.length(); x = x + 1) {
+            char c = s.charAt(x);
+            if (c == find) {
+                index = x;
+                x = s.length();
+            }
+        }
+        return (index);
+    }
+
+    public static boolean isEquals(String obj1,
+            String obj2) {
+        boolean result = true;
+        if (obj1.length() != obj2.length()) {
+            result = false;
+        } else {
+            for (int x = 0; x < obj1.length()
+                    && result; x = x + 1) {
+                if (obj1.charAt(x) != obj2.charAt(x)) {
+                    result = false;
+                }
+            }
+        }
+        return (result);
+    }
+
+    public static String getHtml(String endereco) {
+        URL url;
+        InputStream is = null;
+        BufferedReader br;
+        String resp = "", line;
+        try {
+            url = new URL(endereco);
+            is = url.openStream();
+            br = new BufferedReader(
+                    new InputStreamReader(is));
+
+            while ((line = br.readLine()) != null) {
+                resp += line + "\n";
+            }
+        } catch (MalformedURLException mue) {
+            mue.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        try {
+            is.close();
+        } catch (IOException ioe) {
+
+        }
+        return (resp);
     }
 }
