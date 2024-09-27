@@ -35,7 +35,7 @@ void verificarPalindromo() {
 
     verificarPalindromo();
 }
-a
+
 int main() {
     file = fopen("pub.in", "r");
     
