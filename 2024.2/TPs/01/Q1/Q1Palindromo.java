@@ -20,5 +20,6 @@ public class Q1Palindromo {
 
         } while (myObj.hasNextLine());
         myObj.close();
+        
     }
 }

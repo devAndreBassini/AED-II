@@ -3,19 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define FILE_NAME "Q1pub.in" // Arquivo para teste
-// #define FILE_NAME "pub.in" // Arquivo do Verde
-
 int main() {
     char str1[100], str2[100], str3[200];
     int size1, size2, size3, pos1 = 0, pos2 = 0;
     int aux = 0;
-
-    FILE *file = fopen(FILE_NAME, "r");
+    
+    // Path pro meu PC
+    FILE *f = fopen("pub.in", "r");
+    if (f == NULL) exit(1);
     
     while (1) {
-        if (fscanf(file, " %[^ ]", str1) == EOF) break;
-        if (fscanf(file, " %[^\n]", str2) == EOF) break;
+        if (fscanf(f, " %[^ ]", str1) == EOF) break;
+        if (fscanf(f, " %[^\n]", str2) == EOF) break;
 
         pos1 = 0;
         pos2 = 0;
@@ -46,7 +45,7 @@ int main() {
 
         printf("%s\n", str3);
     }
-    fclose(file);
+    fclose(f);
 
     return 0;
 }
