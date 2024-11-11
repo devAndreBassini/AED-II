@@ -15,7 +15,6 @@ public class Pokemon implements Cloneable {
     private boolean isLegendary;
     private Date captureDate;
 
-    // Construtor padrão
     public Pokemon() {
         this.id = 0;
         this.generation = 0;
@@ -30,7 +29,6 @@ public class Pokemon implements Cloneable {
         this.captureDate = new Date();
     }
 
-    // Método clone
     @Override
     public Pokemon clone() {
         try {
@@ -40,48 +38,72 @@ public class Pokemon implements Cloneable {
         }
     }
 
-    // Método imprimir
     public void imprimir() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        String typesFormatted = this.types.isEmpty() ? "[]" : String.format("['%s']", String.join("', '", this.types));
+
+        String abilitiesFormatted = this.abilities.isEmpty() ? "[]"
+                : String.format("['%s']", String.join("', '", this.abilities));
+
         System.out.printf(
-            "[#%d -> %s: %s - %s - %s - %.1fkg - %.1fm - %d%% - %b - %d gen] - %s\n",
-            this.id, this.name, this.description, this.types.toString(), this.abilities.toString(),
-            this.weight, this.height, this.captureRate, this.isLegendary, this.generation, sdf.format(this.captureDate)
-        );
+                "[#%d -> %s: %s - %s - %s - %.1fkg - %.1fm - %d%% - %b - %d gen] - %s\n",
+                this.id, this.name, this.description, typesFormatted, abilitiesFormatted,
+                this.weight, this.height, this.captureRate, this.isLegendary, this.generation,
+                sdf.format(this.captureDate));
     }
 
-    // Método para ler a partir do CSV
     public void ler(String linha) {
-        String[] campos = linha.split(",");
-        
+        String[] campos = linha.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+
+        if (campos.length < 12) {
+            campos = Arrays.copyOf(campos, 12);
+        }
+
         this.id = Integer.parseInt(campos[0].isEmpty() ? "0" : campos[0]);
-        this.name = campos[1];
-        this.description = campos[2];
-        this.types = new ArrayList<>(Arrays.asList(campos[3].split(";")));
-        this.abilities = new ArrayList<>(Arrays.asList(campos[4].split(";")));
-        this.weight = Double.parseDouble(campos[5].isEmpty() ? "0.0" : campos[5]);
-        this.height = Double.parseDouble(campos[6].isEmpty() ? "0.0" : campos[6]);
-        this.captureRate = Integer.parseInt(campos[7].isEmpty() ? "0" : campos[7]);
-        this.isLegendary = Boolean.parseBoolean(campos[8]);
-        this.generation = Integer.parseInt(campos[9].isEmpty() ? "0" : campos[9]);
+        this.generation = Integer.parseInt(campos[1].isEmpty() ? "0" : campos[1]);
+        this.name = campos[2].replace("\"", "").trim();
+        this.description = campos[3].replace("\"", "").trim();
+        this.types = new ArrayList<>();
+
+        if (!campos[4].isEmpty()) {
+            this.types.add(campos[4].replace("\"", "").trim());
+        }
+
+        if (!campos[5].isEmpty()) {
+            this.types.add(campos[5].replace("\"", "").trim());
+        }
+
+        this.abilities = new ArrayList<>(
+                Arrays.asList(campos[6].replace("\"", "").replaceAll("[\\[\\]']", "").split(",\\s*")));
+
+        String weightString = campos[7].isEmpty() ? "0.0" : campos[7].replace(",", ".");
+        String heightString = campos[8].isEmpty() ? "0.0" : campos[8].replace(",", ".");
+
+        this.weight = Double.parseDouble(weightString);
+        this.height = Double.parseDouble(heightString);
+        this.captureRate = Integer.parseInt(campos[9].isEmpty() ? "0" : campos[9]);
+        this.isLegendary = Integer.parseInt(campos[10].isEmpty() ? "0" : campos[10]) == 1;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            this.captureDate = sdf.parse(campos[10]);
+            this.captureDate = sdf.parse(campos[11].trim());
         } catch (Exception e) {
-            this.captureDate = new Date(); // Data padrão
+            this.captureDate = new Date();
         }
     }
 
     public static void main(String[] args) {
         ArrayList<Pokemon> pokemons = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("pokemon.csv"))) {
-            br.readLine(); // Pula a primeira linha (cabeçalho)
+        try (BufferedReader br = new BufferedReader(new FileReader("../pokemon.csv"))) {
+            br.readLine();
 
             String linha;
             while ((linha = br.readLine()) != null) {
-                if (linha.equals("FIM")) break;
+                if (linha.equals("FIM"))
+                    break;
 
                 Pokemon p = new Pokemon();
                 p.ler(linha);
@@ -91,8 +113,32 @@ public class Pokemon implements Cloneable {
             e.printStackTrace();
         }
 
-        for (Pokemon p : pokemons) {
-            p.imprimir();
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                String entrada = scanner.nextLine();
+                if (entrada.equals("FIM")) {
+                    break;
+                }
+
+                try {
+                    int id = Integer.parseInt(entrada);
+
+                    Pokemon encontrado = null;
+                    for (Pokemon p : pokemons) {
+                        if (p.id == id) {
+                            encontrado = p;
+                            break;
+                        }
+                    }
+
+                    if (encontrado != null) {
+                        encontrado.imprimir();
+                    }
+                } catch (NumberFormatException e) {
+                    return;
+                }
+            }
+            scanner.close();
         }
     }
 }
