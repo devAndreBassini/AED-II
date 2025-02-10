@@ -15,8 +15,11 @@ public class Q3Ciframento {
             StringBuilder encryptedWord = new StringBuilder();
 
             for (int i = 0; i < word.length(); i++) {
-                encryptedWord.append((char) (word.charAt(i) + key));
-            }
+                if(word.charAt(i) == '�')
+                    encryptedWord.append((char) (word.charAt(i)));
+                else
+                    encryptedWord.append((char) (word.charAt(i) + key));
+                }
 
             System.out.println(encryptedWord);
         }

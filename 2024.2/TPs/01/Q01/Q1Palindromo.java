@@ -7,7 +7,7 @@ public class Q1Palindromo {
         do {
             String word = myObj.nextLine();
 
-            if (word == "FIM")
+            if (word.equals("FIM"))
                 break;
 
             StringBuilder sb = new StringBuilder(word);
