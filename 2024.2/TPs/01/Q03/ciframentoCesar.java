@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+
 public class Q3Ciframento {
     private static final int key = 3;
 
@@ -14,11 +15,12 @@ public class Q3Ciframento {
 
             StringBuilder encryptedWord = new StringBuilder();
 
+
             for (int i = 0; i < word.length(); i++) {
-                if(word.charAt(i) == '�')
-                    encryptedWord.append((char) (word.charAt(i)));
-                else
+                if(0 <= word.charAt(i) && word.charAt(i) <= 255)
                     encryptedWord.append((char) (word.charAt(i) + key));
+                else
+                    encryptedWord.append((char) (word.charAt(i)));
                 }
 
             System.out.println(encryptedWord);
