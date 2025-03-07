@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Validacao{
+public class validacao{
     public static Boolean upperChar(String password){ // uma letra maiúscula 65 <= c <= 90
         for(int i = 0; i < password.length(); i++){
             if(65 <= password.charAt(i) && password.charAt(i) <= 90) return true;
