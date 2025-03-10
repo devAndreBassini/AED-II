@@ -57,7 +57,7 @@ public class validacao{
             if(securePassword(password))
                 System.out.println("SIM");
             else
-                System.out.println("NÃO");
+                System.out.println("NAO");
         }
         sc.close();
     }

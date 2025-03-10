@@ -35,13 +35,8 @@ public class Substring {
                     maisLongaID = i;
                 }
             }
-
-            if(substring[maisLongaID].equals(input) || subStringID == input.length()){
-                maior = 0;
-                System.out.println(maior);
-            } else {
-                System.out.println(substring[maisLongaID].length());
-            }
+            
+            System.out.println(substring[maisLongaID].length());
         }
         sc.close();
     }
