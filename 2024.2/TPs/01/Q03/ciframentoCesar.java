@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 
-public class Q3Ciframento {
+public class ciframentoCesar {
     private static final int key = 3;
 
     public static void main(String[] args) {

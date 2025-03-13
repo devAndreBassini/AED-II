@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Anagrama {
+public class anagrama {
     public static int comparador(String input01, String input02) {
         int match = 0;
         for (int i = 0; i < input01.length(); i++) {
@@ -36,7 +36,7 @@ public class Anagrama {
             if (match == input01.length() || match == input02.length())
                 System.out.println("SIM");
             else
-                System.out.println("NÃO");
+                MyIO.println("NÃO");
         }
         sc.close();
     }
