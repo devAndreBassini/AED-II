@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class SomaDigitos {
+public class somaDigitos {
     public static int somador(int value, int sum){
         if(value > 0)
             return somador(value / 10, sum + (value%10));
