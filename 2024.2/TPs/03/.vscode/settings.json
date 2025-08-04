@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "C": "C:\\VsCode\\compiladores\\bin",
+        "Py": "C:\\Users\\Windows\\AppData\\Local\\Programs\\Python\\Python312\\",
+        "Jaava": "C:\\Program Files\\Java\\jdk-17\\bin",
+        "string.h": "c",
+        "stdlib.h": "c",
+        "array": "c",
+        "memory": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c"
+    }
+}
